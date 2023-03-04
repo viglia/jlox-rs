@@ -1,9 +1,12 @@
+pub mod parser;
 pub mod scanner;
 pub mod token;
 
 use std::env;
 use std::io::{self, Write};
 
+use parser::visitor::{GraphGenerator, PrettyPrinter, Visitor};
+use parser::Parser;
 use scanner::Scanner;
 
 fn main() {
@@ -32,10 +35,10 @@ fn run_prompt() {
             }
             Ok(_) => {
                 let mut scanner = Scanner::new(input.as_str());
-                scanner.scan_tokens();
-                for token in scanner.tokens {
-                    println!("{}", token);
-                }
+                let tokens = scanner.scan_tokens();
+
+                let mut parser = Parser::new(tokens);
+                let expr_tree = parser.parse();
             }
             Err(err) => println!("Cannot read command line input: {}", err),
         }
@@ -47,8 +50,8 @@ fn run_file(path: &String) {
     match std::fs::read_to_string(path) {
         Ok(script) => {
             let mut scanner = Scanner::new(&script);
-            scanner.scan_tokens();
-            for token in scanner.tokens {
+            let tokens = scanner.scan_tokens();
+            for token in tokens {
                 println!("{}", token);
             }
         }

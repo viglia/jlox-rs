@@ -8,8 +8,8 @@ use multipeek::{multipeek, MultiPeek};
 use crate::token::{Token, TokenType};
 
 pub struct Scanner<'a> {
-    pub source: MultiPeek<Chars<'a>>,
-    pub tokens: Vec<Token>,
+    source: MultiPeek<Chars<'a>>,
+    tokens: Vec<Token>,
     current_lexeme_buf: Vec<char>,
     current: u64,
     line: u64,
@@ -47,7 +47,7 @@ impl<'a> Scanner<'a> {
 }
 
 impl<'a> Scanner<'a> {
-    pub fn scan_tokens(&mut self) {
+    pub fn scan_tokens(&mut self) -> Vec<Token> {
         while !self.is_at_end() {
             self.scan_token()
         }
@@ -56,7 +56,9 @@ impl<'a> Scanner<'a> {
             r#type: TokenType::EOF,
             lexeme: "".to_string(),
             line: self.line,
-        })
+        });
+
+        return std::mem::take(&mut self.tokens);
     }
 
     fn peek(&mut self) -> Option<&char> {

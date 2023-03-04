@@ -9,3 +9,4 @@ edition = "2021"
 strum_macros = { version = "0.24.3" }
 multipeek = { version = "0.1.2" }
 graphviz-rust = { version = "0.6.1" }
+clap = { version = "4.1.8" }

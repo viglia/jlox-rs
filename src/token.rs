@@ -75,9 +75,9 @@ impl Display for Token {
         write!(
             f,
             "Line: {} - {:?} {}",
-            &self.line,
-            &self.discriminant(),
-            &self.lexeme
+            self.line,
+            self.discriminant(),
+            self.lexeme
         )
     }
 }

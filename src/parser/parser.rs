@@ -1,5 +1,3 @@
-use std::collections::btree_map::Iter;
-
 use multipeek::{multipeek, MultiPeek};
 
 use crate::token::{Token, TokenType};

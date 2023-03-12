@@ -125,16 +125,19 @@ impl Visitor<()> for GraphGenerator {
 
     fn visit_literal_expression(&self, expr: &LiteralExpression) -> () {
         let literal_id = *self.sequence.borrow();
+        let literal_node: Node;
         match expr {
             LiteralExpression::Bool(token)
             | LiteralExpression::Nil(token)
-            | LiteralExpression::Number(token)
-            | LiteralExpression::String(token) => {
-                let literal_node =
+            | LiteralExpression::Number(token) => {
+                literal_node =
                     node!(literal_id.to_string();attr!("label",(format!("\"{}\"", token.lexeme))));
-                self.graph.borrow_mut().add_stmt(Stmt::Node(literal_node));
+            }
+            LiteralExpression::String(token) => {
+                literal_node = node!(literal_id.to_string();attr!("label",(format!("\"'{}'\"", token.lexeme.trim_matches('"')))));
             }
         }
+        self.graph.borrow_mut().add_stmt(Stmt::Node(literal_node));
         *self.sequence.borrow_mut() += 1;
     }
 
